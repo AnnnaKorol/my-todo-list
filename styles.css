@@ -8,8 +8,18 @@ body {
     background-color: #f4f4f4;
 }
 
-h1, h2 {
-    color: #333;
+/*input {
+    width:210px;
+}*/
+
+#newTodoDialog {
+    width: 250px;
+    border-radius: 10px;
+    border: 1px solid white;
+}
+
+h2 {
+    text-align: center;
 }
 
 form {
@@ -17,6 +27,11 @@ form {
     padding: 10px;
     border: 1px solid #ccc;
     background-color: #fff;
+    border-radius: 10px;
+}
+
+#todo-form input {
+    width: 215px;
     border-radius: 5px;
 }
 
@@ -51,4 +66,84 @@ form input, form select, form button {
 
 .todo-item button {
     margin-right: 5px;
+}
+
+span {
+    white-space: pre-line;
+}
+
+
+/* Priority styles of the Todo list*/
+.high {
+    background-color: rgba(255, 27, 10, 0.24);
+}
+
+.medium {
+    background-color: rgba(251, 255, 2, 0.46);
+}
+
+.low {
+    background-color: white;
+}
+
+
+.remove-btn, .addNewTodoBtn {
+    border-radius: 10px;
+    border: none;
+}
+
+.remove-btn {
+    background-color: rgba(255, 27, 10, 0.24);
+}
+
+.addNewTodoBtn {
+    background-color: #f4f4f4;
+}
+
+.addNewTodoBtn:hover {
+    color: red;
+}
+
+
+.project-item {
+    border-radius: 25px;
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.newProjectBtn {
+    width: 150px;
+    height: 40px;
+    margin-bottom: 20px;
+    background-color: #f4f4f4;
+    border-radius: 25px;
+    border: none;
+    font-size: 20px;
+    color: #373737;
+}
+
+.newProjectBtn:hover {
+    color: red;
+}
+
+.todoItem {
+    padding: 5px;
+    margin-bottom: 5px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#project-list {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.todo-container{
+    margin-top: 10px;
 }
