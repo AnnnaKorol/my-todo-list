@@ -149,20 +149,19 @@ function displayProjects(projects) {
 
 
 
-
 			//Add 'Remove Todo' Button
 			const removeTodoBtn = document.createElement("button");
-			removeTodoBtn.textContent = "Remove Task";
+			removeTodoBtn.textContent = "Delete";
 			removeTodoBtn.classList.add('remove-todo-btn');
 			removeTodoBtn.onclick = () => {
 				const todoIndex = project.todos.findIndex((p) => p.id === todo.id);
-				console.log("Found todo index:", todoIndex);
+				/*console.log("Found todo index:", todoIndex);*/
 				if (todoIndex !== -1) {
 					project.todos.splice(todoIndex, 1);
 					displayProjects(myProjects);
 				}
 			}
-
+/* findIndex : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex*/
 
 
 

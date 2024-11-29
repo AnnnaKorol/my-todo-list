@@ -12,7 +12,7 @@ body {
     width:210px;
 }*/
 
-#newTodoDialog {
+#newTodoDialog, #newProjectDialog {
     width: 250px;
     border-radius: 10px;
     border: 1px solid white;
@@ -23,7 +23,7 @@ h2 {
 }
 
 form {
-    margin-bottom: 20px;
+    /*margin-bottom: 20px;*/
     padding: 10px;
     border: 1px solid #ccc;
     background-color: #fff;
@@ -33,6 +33,10 @@ form {
 #todo-form input {
     width: 215px;
     border-radius: 5px;
+}
+
+#project-name {
+    width: 215px;
 }
 
 form label {
@@ -53,6 +57,7 @@ form input, form select, form button {
 }
 
 .todo-item {
+    min-width: 400px;
     padding: 10px;
     border: 1px solid #ccc;
     background-color: #fff;
@@ -87,13 +92,22 @@ span {
 }
 
 
-.remove-btn, .addNewTodoBtn {
+.remove-btn, .addNewTodoBtn, .remove-todo-btn {
     border-radius: 10px;
     border: none;
 }
 
 .remove-btn {
-    background-color: rgba(255, 27, 10, 0.24);
+    background-color: rgba(255,88,84,0.44);
+    text-align: center;
+}
+
+
+
+.remove-todo-btn {
+    background-color: rgba(255,130,58,0.22);
+    font-size: 10px;
+
 }
 
 .addNewTodoBtn {
@@ -106,7 +120,8 @@ span {
 
 
 .project-item {
-    max-width: 230px;
+    min-width: 150px;
+    max-width: 150px;
     border-radius: 25px;
     padding: 10px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
