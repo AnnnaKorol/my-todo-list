@@ -148,6 +148,24 @@ function displayProjects(projects) {
 			};
 
 
+
+
+			//Add 'Remove Todo' Button
+			const removeTodoBtn = document.createElement("button");
+			removeTodoBtn.textContent = "Remove Task";
+			removeTodoBtn.classList.add('remove-todo-btn');
+			removeTodoBtn.onclick = () => {
+				const todoIndex = project.todos.findIndex((p) => p.id === todo.id);
+				console.log("Found todo index:", todoIndex);
+				if (todoIndex !== -1) {
+					project.todos.splice(todoIndex, 1);
+					displayProjects(myProjects);
+				}
+			}
+
+
+
+
 			/* Todo text  */
 			const todoText = document.createElement("span");
 			todoText.textContent = `${todo.title}  
@@ -157,14 +175,13 @@ function displayProjects(projects) {
 			updateTodoTextStyle(todoText, todo.completed);
 
 
-
 			todoItem.appendChild(checkbox);
 			todoItem.appendChild(todoText);
+			todoItem.appendChild(removeTodoBtn);
 
 			todoContainer.appendChild(todoItem);
 
 		}
-
 
 
 		/* Todo text style when 'clicked' checkbox| 'not clicked' */
@@ -177,6 +194,13 @@ function displayProjects(projects) {
 				todoText.style.color = "black";
 			}
 		}
+
+
+
+
+
+
+
 
 
 		projectItem.appendChild(titleElm);
@@ -228,13 +252,6 @@ function showTodoDialog(project) {
 
 
 
-
-
-
-
-
-
-
 	/* Cancel button in Todo Form */
 	document.getElementById("cancel-button").addEventListener("click", () => {
 		todoDialog.close();
@@ -242,3 +259,6 @@ function showTodoDialog(project) {
 
 	todoDialog.showModal();
 }
+
+
+/*https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details*/
