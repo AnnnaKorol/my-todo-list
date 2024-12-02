@@ -61,8 +61,6 @@ function addProjectToGroup(project) {
 	myProjects.push(createdProject);
 }
 
-
-
 //----------------------------------------------------------------Display Projects------------------------------------------------------------------------//
 
 
@@ -102,7 +100,7 @@ function displayProjects(projects) {
 		removeProjectBtn.classList.add('remove-btn');
 		removeProjectBtn.onclick = () => {
 			const projectIndex = myProjects.findIndex((p) => p.id === project.id);
-			console.log("Found project index:", projectIndex);
+			/*console.log("Found project index:", projectIndex);*/
 			if (projectIndex !== -1) {
 				myProjects.splice(projectIndex, 1);
 				displayProjects(myProjects);
@@ -125,7 +123,7 @@ function displayProjects(projects) {
 		todoContainer.classList.add("todo-container");
 
 
-//--------------------------------------------------For every Todo----------------------------------------------------------------//
+//--------------------------------------------------For every Todo---------------------------------------------------------------------------------------------------------------------------------//
 
 		/* Go through every project and  Create Todo */
 		for (let i = 0; i < project.todos.length; i++) {
@@ -134,6 +132,7 @@ function displayProjects(projects) {
 			/* Todo-single-container */
 			const todoItem = document.createElement("div");
 			todoItem.classList.add('todoItem');
+			todoItem.setAttribute("data-index", `${i}`);
 			/*       todoItem.textContent = `${todo.title} ${todo.dueDate}`;
 			 */
 
@@ -146,7 +145,6 @@ function displayProjects(projects) {
 				todo.completed = checkbox.checked;
 				updateTodoTextStyle(todoText, todo.completed);
 			};
-
 
 
 			//Add 'Remove Todo' Button
@@ -174,12 +172,53 @@ function displayProjects(projects) {
 			updateTodoTextStyle(todoText, todo.completed);
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+			/*Todo select option*/
+			const selectProject = document.createElement("SELECT");
+			const selectProjectDefaultOption = document.createElement("OPTION");
+			selectProjectDefaultOption.textContent = 'Move to...'
+			selectProject.appendChild(selectProjectDefaultOption);
+
+			for (let index = 0; index < myProjects.length; index++) {
+				const selectProjectOption = document.createElement("OPTION");
+				selectProjectOption.value = project.name;
+				selectProjectOption.textContent = myProjects[index].name;
+				selectProject.appendChild(selectProjectOption);
+			}
+
+
+
+			selectProject.onchange = function () {
+				/*const optionName = this.options[this.selectedIndex].name;
+				selectProject.className = optionName;*/
+
+				/*$(todoItem.dataset.index).prependTo(project.todos);*/
+			}
+
+
+
+
+
+
+
+
 			todoItem.appendChild(checkbox);
 			todoItem.appendChild(todoText);
 			todoItem.appendChild(removeTodoBtn);
+			todoItem.appendChild(selectProject);
 
 			todoContainer.appendChild(todoItem);
-
 		}
 
 
@@ -193,26 +232,14 @@ function displayProjects(projects) {
 				todoText.style.color = "black";
 			}
 		}
-
-
-
-
-
-
-
-
-
 		projectItem.appendChild(titleElm);
 		projectItem.appendChild(removeProjectBtn);
 		projectItem.appendChild(addNewTodoBtn);
 		projectItem.appendChild(todoContainer);
 
-
 		projectList.appendChild(projectItem);
 	}
 }
-
-
 
 
 //---------------------------------------------------------------------------------Modal 'Todo' window------------------------------------------------------------------------------//
@@ -231,24 +258,20 @@ function showTodoDialog(project) {
 	/*https://stackoverflow.com/questions/15755770/change-text-color-of-selected-option-in-a-select-box*/
 
 
+	//Add Todo to the project list
 	todoForm.onsubmit = (event) => {
 		event.preventDefault();
-
 		const newTodo = new Todo(
 			document.getElementById("todo-title").value,
 			document.getElementById("todo-description").value || "",
 			document.getElementById("todo-due-date").value || "",
 			document.getElementById("todo-priority").value || ""
 		);
-
 		project.addTodo(newTodo);
-
 		displayProjects(myProjects);
 		todoDialog.close();
 		todoForm.reset();
 	};
-
-
 
 
 	/* Cancel button in Todo Form */
@@ -258,6 +281,5 @@ function showTodoDialog(project) {
 
 	todoDialog.showModal();
 }
-
 
 /*https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details*/
