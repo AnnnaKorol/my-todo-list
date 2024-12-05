@@ -16,7 +16,3 @@ export default class Project {
 	}
 }
 
-/*
-const project1 = new Project('Create a Todo List');
-const Todo = new Todo("Create a dialog window");
-Todo.addTodo(new Todo);*/

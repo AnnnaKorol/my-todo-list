@@ -99,11 +99,9 @@ function displayProjects(projects) {
 	}
 
 	//Clean container 'projectList'
-	projectList.innerHTML = "";
-
+/*	projectList.innerHTML = "";*/
 
 	//Clean container 'projectList'
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	while (projectList.firstChild) {
 		projectList.removeChild(projectList.firstChild);
 	}
@@ -193,7 +191,7 @@ function displayProjects(projects) {
 			todoText.className = todo.priority;
 			updateTodoTextStyle(todoText, todo.completed);
 
-			/*Todo select option*/
+			/*Todo select option for Projects*/
 			const selectProject = document.createElement("SELECT");
 			const selectProjectDefaultOption = document.createElement("OPTION");
 			selectProjectDefaultOption.textContent = "Move to...";
