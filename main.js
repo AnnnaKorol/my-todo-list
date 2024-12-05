@@ -179,6 +179,7 @@ function displayProjects(projects) {
 				/*console.log("Found todo index:", todoIndex);*/
 				if (todoIndex !== -1) {
 					project.todos.splice(todoIndex, 1);
+					saveToStorage(myProjects);
 					displayProjects(myProjects);
 				}
 			};
@@ -226,6 +227,7 @@ function displayProjects(projects) {
 
 					if (todoToMove) {
 						targetProject.addTodo(todoToMove);
+						saveToStorage(myProjects);
 						displayProjects(myProjects);
 					}
 				}
@@ -282,6 +284,7 @@ function showTodoDialog(project) {
 			document.getElementById("todo-priority").value || ""
 		);
 		project.addTodo(newTodo);
+		saveToStorage(myProjects);
 		displayProjects(myProjects);
 		todoDialog.close();
 		todoForm.reset();
