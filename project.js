@@ -1,9 +1,8 @@
-
 import Todo from "./todo.js";
 
 export default class Project {
 	constructor(name) {
-		this.id = Date.now();
+		this.id = Date.now() + Math.random();
 		this.name = name;
 		this.todos = [];
 	}
@@ -13,16 +12,9 @@ export default class Project {
 	}
 
 	removeTodo(todoId) {
-		this.todos = this.todos.filter(todo => todo.id !== todoId);
+		this.todos = this.todos.filter((todo) => todo.id !== todoId);
 	}
 }
-
-
-
-
-
-
-
 
 /*
 const project1 = new Project('Create a Todo List');

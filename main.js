@@ -1,25 +1,47 @@
+import { saveToStorage, loadFromStorage } from "./storage.js";
+/* saveToStorage(myProjects); */
+
 import Project from "./project.js";
 import Todo from "./todo.js";
 
-const myProjects = [new Project("# Home 🏡"), new Project("# Work 💻"), new Project("# Study 📚")];
 
-//Button 'New Project'
-const newProjectBtn = document.createElement("button");
-newProjectBtn.textContent = " + New Project";
-newProjectBtn.classList.add('newProjectBtn');
+let myProjects = [];
 
-document.body.appendChild(newProjectBtn);
+document.addEventListener("DOMContentLoaded", () => {
+	//Default display of projects(2 projects: Home and Work)
+	myProjects = loadFromStorage();
 
-//Default display of projects(2 projects: Home and Work)
-displayProjects(myProjects);
+	if (myProjects.length === 0) {
+		myProjects = [
+			new Project("# Home 🏡"),
+			new Project("# Work 💻"),
+			new Project("# Study 📚"),
+		];
+		saveToStorage(myProjects);
+	}
 
-//Refer to Project dialog
-const newProjectDialog = document.getElementById("newProjectDialog");
+	//Button 'New Project'
+	if (!document.querySelector(".newProjectBtn")) {
+		const newProjectBtn = document.createElement("button");
+		newProjectBtn.textContent = " + New Project";
+		newProjectBtn.classList.add("newProjectBtn");
 
-//Show 'Add Project' modal
-newProjectBtn.onclick = () => {
-	newProjectDialog.showModal();
-};
+		document.body.appendChild(newProjectBtn);
+
+		//Refer to Project dialog
+		const newProjectDialog = document.getElementById("newProjectDialog");
+
+		//Show 'Add Project' modal
+		newProjectBtn.onclick = () => {
+			newProjectDialog.showModal();
+		};
+	}
+
+	displayProjects(myProjects);
+
+});
+
+
 
 //---------------------------------------------------------------------------------Modal 'Project' window------------------------------------------------------------------------------//
 
@@ -40,7 +62,6 @@ document
 		newProjectDialog.close();
 	});
 
-
 /* Cancel button in Project Form */
 document.getElementById("cancel-project-btn").addEventListener("click", () => {
 	newProjectDialog.close();
@@ -59,10 +80,11 @@ function addProjectToGroup(project) {
 
 	const createdProject = new Project(project.name);
 	myProjects.push(createdProject);
+	saveToStorage(myProjects);
+	console.log("Loaded projects:", myProjects);
 }
 
 //----------------------------------------------------------------Display Projects------------------------------------------------------------------------//
-
 
 // Display projects with "Add Task" button
 function displayProjects(projects) {
@@ -76,8 +98,11 @@ function displayProjects(projects) {
 		document.body.appendChild(projectList);
 	}
 
+	//Clean container 'projectList'
 	projectList.innerHTML = "";
 
+
+	//Clean container 'projectList'
 	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	while (projectList.firstChild) {
 		projectList.removeChild(projectList.firstChild);
@@ -89,7 +114,6 @@ function displayProjects(projects) {
 		const projectItem = document.createElement("div"); //<div class='book-item'></div>
 		projectItem.classList.add("project-item");
 
-
 		//Project name
 		const titleElm = document.createElement("h3"); //<h2>project.name</h2>
 		titleElm.textContent = project.name;
@@ -97,13 +121,16 @@ function displayProjects(projects) {
 		//Add 'Remove Project' Button
 		const removeProjectBtn = document.createElement("button");
 		removeProjectBtn.textContent = "Remove project";
-		removeProjectBtn.classList.add('remove-btn');
+		removeProjectBtn.classList.add("remove-btn");
 		removeProjectBtn.onclick = () => {
 			const projectIndex = myProjects.findIndex((p) => p.id === project.id);
 			/*console.log("Found project index:", projectIndex);*/
 			if (projectIndex !== -1) {
 				myProjects.splice(projectIndex, 1);
+				saveToStorage(myProjects);
 				displayProjects(myProjects);
+			} else {
+				console.error("Project not found!");
 			}
 		};
 
@@ -112,18 +139,16 @@ function displayProjects(projects) {
 		//Add 'Task' Button and onclick show dialog Todo
 		const addNewTodoBtn = document.createElement("button");
 		addNewTodoBtn.textContent = " + Add Task";
-		addNewTodoBtn.classList.add('addNewTodoBtn');
+		addNewTodoBtn.classList.add("addNewTodoBtn");
 		addNewTodoBtn.onclick = () => {
 			showTodoDialog(project);
 		};
-
 
 		/*   Todo container */
 		const todoContainer = document.createElement("div");
 		todoContainer.classList.add("todo-container");
 
-
-//--------------------------------------------------For every Todo---------------------------------------------------------------------------------------------------------------------------------//
+		//--------------------------------------------------For every Todo---------------------------------------------------------------------------------------------------------------------------------//
 
 		/* Go through every project and  Create Todo */
 		for (let i = 0; i < project.todos.length; i++) {
@@ -131,11 +156,10 @@ function displayProjects(projects) {
 
 			/* Todo-single-container */
 			const todoItem = document.createElement("div");
-			todoItem.classList.add('todoItem');
+			todoItem.classList.add("todoItem");
 			todoItem.setAttribute("data-index", `${i}`);
 			/*       todoItem.textContent = `${todo.title} ${todo.dueDate}`;
 			 */
-
 
 			/* Checkbox checked|not-checked function */
 			const checkbox = document.createElement("input");
@@ -146,11 +170,10 @@ function displayProjects(projects) {
 				updateTodoTextStyle(todoText, todo.completed);
 			};
 
-
 			//Add 'Remove Todo' Button
 			const removeTodoBtn = document.createElement("button");
 			removeTodoBtn.textContent = "Delete";
-			removeTodoBtn.classList.add('remove-todo-btn');
+			removeTodoBtn.classList.add("remove-todo-btn");
 			removeTodoBtn.onclick = () => {
 				const todoIndex = project.todos.findIndex((p) => p.id === todo.id);
 				/*console.log("Found todo index:", todoIndex);*/
@@ -158,10 +181,8 @@ function displayProjects(projects) {
 					project.todos.splice(todoIndex, 1);
 					displayProjects(myProjects);
 				}
-			}
-/* findIndex : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex*/
-
-
+			};
+			/* findIndex : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex*/
 
 			/* Todo text  */
 			const todoText = document.createElement("span");
@@ -171,23 +192,10 @@ function displayProjects(projects) {
 			todoText.className = todo.priority;
 			updateTodoTextStyle(todoText, todo.completed);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 			/*Todo select option*/
 			const selectProject = document.createElement("SELECT");
 			const selectProjectDefaultOption = document.createElement("OPTION");
-			selectProjectDefaultOption.textContent = 'Move to...'
+			selectProjectDefaultOption.textContent = "Move to...";
 			selectProject.appendChild(selectProjectDefaultOption);
 
 			for (let index = 0; index < myProjects.length; index++) {
@@ -197,21 +205,31 @@ function displayProjects(projects) {
 				selectProject.appendChild(selectProjectOption);
 			}
 
-
-
 			selectProject.onchange = function () {
-				/*const optionName = this.options[this.selectedIndex].name;
-				selectProject.className = optionName;*/
+				const selectedProjectName =
+					this.options[this.selectedIndex]
+						.textContent; /* textContent returns a text of the element from the select  */
+				const targetProject = myProjects.find(
+					(project) => project.name === selectedProjectName
+				);
 
-				/*$(todoItem.dataset.index).prependTo(project.todos);*/
-			}
+				if (targetProject && targetProject !== project) {
+					/* if it is found project and make sure that it is not the same project in which this task is */
+					const todoIndex = parseInt(
+						todoItem.dataset.index,
+						10
+					); /* dataset.index returns string "2" therefore convert to number with parseInt*/
+					const todoToMove = project.todos.splice(
+						todoIndex,
+						1
+					)[0]; /* we need to return an arraz of deleted elements [0] */
 
-
-
-
-
-
-
+					if (todoToMove) {
+						targetProject.addTodo(todoToMove);
+						displayProjects(myProjects);
+					}
+				}
+			};
 
 			todoItem.appendChild(checkbox);
 			todoItem.appendChild(todoText);
@@ -220,7 +238,6 @@ function displayProjects(projects) {
 
 			todoContainer.appendChild(todoItem);
 		}
-
 
 		/* Todo text style when 'clicked' checkbox| 'not clicked' */
 		function updateTodoTextStyle(todoText, isCompleted) {
@@ -241,9 +258,7 @@ function displayProjects(projects) {
 	}
 }
 
-
 //---------------------------------------------------------------------------------Modal 'Todo' window------------------------------------------------------------------------------//
-
 
 // Show the form for adding a task
 function showTodoDialog(project) {
@@ -251,12 +266,11 @@ function showTodoDialog(project) {
 	const todoForm = document.getElementById("todo-form");
 
 	//Priority select options with color based on class in html
-	const select = document.getElementById('todo-priority');
+	const select = document.getElementById("todo-priority");
 	select.onchange = function () {
 		select.className = this.options[this.selectedIndex].className;
-	}
+	};
 	/*https://stackoverflow.com/questions/15755770/change-text-color-of-selected-option-in-a-select-box*/
-
 
 	//Add Todo to the project list
 	todoForm.onsubmit = (event) => {
@@ -272,7 +286,6 @@ function showTodoDialog(project) {
 		todoDialog.close();
 		todoForm.reset();
 	};
-
 
 	/* Cancel button in Todo Form */
 	document.getElementById("cancel-button").addEventListener("click", () => {
